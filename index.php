@@ -14,7 +14,7 @@
     <?php 
         include_once 'header.php';
         include 'welcome.inc.php';
-
+        $search="";
         //check if the user is logged in or not
         if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true):
         else: 
@@ -39,6 +39,10 @@
                         {
                             echo "Content could be maximum 1000 characters!";
                         }
+                        if($_GET["error"] == "notSuccess")
+                        {
+                            echo "The note has not been deleted!";
+                        }
                     }
                 ?>
             </div>
@@ -53,10 +57,13 @@
                 <button type="submit" class="btnadd" name="btnadd" a href="index.php">Add</button>
             <?php endif; ?>
         </form>
-        <form class="searchBar" action="search.php" method="POST">
-            <input type="text" name="btnsearch" placeholder="Search">
-            <button type="submit" name="submit-search" a href="index.php">Search</button>
+
+    <!-- SEARCH BAR -->
+        <form class="searchBar" action="index.php" method="POST">
+            <input type="text" name="searchfield" placeholder="Search">
+            <button type="text" name="btnsearch">Search</button>
         </form>
+
     <!-- TABLE CONTAINS USER NOTES-->
         <div class="userdata">
             <h2 class="title">My notes</h2>
@@ -69,52 +76,77 @@
                     <td class="action header-table-title" >Action</td>
                 </tr>
         </div>
-
-        <script>
-            $(document).ready(function()
-            {
-                $("tr:odd").css({
-                    "background-color":"rgb(141, 141, 141)",
-                    "color":"#fff"});
-            });
-        </script>
-
-        <?php
-            // save user_id from current session in variable
-            $user_id = $_SESSION['user_id'];
-            // fetch notes data from database for current user, using UserID in table notes
-            $records = mysqli_query($connect,"SELECT * FROM notes WHERE UserID = '$user_id'"); 
-        ?>    
         
-        <?php while($row = mysqli_fetch_array($records)): ?>
-            <tr>
-                <!-- <td><?php echo $row['note_id']; ?></td> -->
-                <td><?php echo $row['date']; ?></td>
-                <td><?php echo $row['title']; ?></td>
-                <td><?php echo $row['content']; ?></td>
-                <td>
-                    <div class="table-buttons-contianer">
-                        <!-- <button class="edit_btn" name="edit_btn" >Edit</button>  -->
-                        <a href="index.php?edit=<?php echo $row['note_id']; ?>" class="edit_btn" name="edit_btn" >Edit</a>
-                        <!-- <button class="delete_btn" name="delete_btn" >Delete</button> -->
-                        <a href="index.php?delete=<?php echo $row['note_id']; ?>" class="delete_btn" name="delete_btn">Delete</a>
-                    </div>
-                </td>
-               
-            </tr>	
-        <?php endwhile; ?>
-        </table>
-        <?php 
+                <script>
+                    $(document).ready(function()
+                    {
+                        $("tr:odd").css({
+                            "background-color":"rgb(141, 141, 141)",
+                            "color":"#fff"});
+                    });
+                </script>
 
-            if($delSuccess == "success")
-            {
-                echo "Delete succesfully!";
-            }
-            else if($delSuccess == "not succes")
-            {
-                echo "Note has not been deleted!";
-            }
-        ?>
+                <?php
+                    // save user_id from current session in variable
+                    $user_id = $_SESSION['user_id'];
+                    // fetch notes data from database for current user, using UserID in table notes
+                    $records = mysqli_query($connect,"SELECT * FROM notes WHERE UserID = '$user_id'");   
+                ?>    
+                
+                <?php 
+                if(isset($_POST["btnsearch"]))
+                {
+                    $search = $_POST['searchfield']; 
+                    $user_id = $_SESSION['user_id'];
+                    $searchResults = mysqli_query($connect, "SELECT * FROM notes WHERE UserID = '$user_id' && ((`title` LIKE '%".$search."%') OR (`content` LIKE '%".$search."%'))") 
+                    or die($mysqli->error());
+                    $numberOfResult = mysqli_num_rows($searchResults);
+
+                    if($numberOfResult > 0){
+                        echo "$numberOfResult search result found!";
+                        while($row = mysqli_fetch_array($searchResults)): ?>
+                        <tr>
+                            <!-- <td><?php echo $row['note_id']; ?></td> -->
+                            <td><?php echo $row['date']; ?></td>
+                            <td><?php echo $row['title']; ?></td>
+                            <td><?php echo $row['content']; ?></td>
+                            <td>
+                                <div class="table-buttons-container">
+                                    <!-- <button class="edit_btn" name="edit_btn" >Edit</button>  -->
+                                    <a href="index.php?edit=<?php echo $row['note_id']; ?>" class="edit_btn" name="edit_btn" >Edit</a>
+                                    <!-- <button class="delete_btn" name="delete_btn" >Delete</button> -->
+                                    <a href="index.php?delete=<?php echo $row['note_id']; ?>" class="delete_btn" name="delete_btn">Delete</a>
+                                </div>
+                            </td>
+                        
+                        </tr>	
+                    <?php endwhile; 
+                    } 
+                    else{
+                        echo "No search result found!";
+                    }    
+                }
+                else {
+                    while($row = mysqli_fetch_array($records)): ?>
+                        <tr>
+                            <!-- <td><?php echo $row['note_id']; ?></td> -->
+                            <td><?php echo $row['date']; ?></td>
+                            <td><?php echo $row['title']; ?></td>
+                            <td><?php echo $row['content']; ?></td>
+                            <td>
+                                <div class="table-buttons-container">
+                                    <!-- <button class="edit_btn" name="edit_btn" >Edit</button>  -->
+                                    <a href="index.php?edit=<?php echo $row['note_id']; ?>" class="edit_btn" name="edit_btn" >Edit</a>
+                                    <!-- <button class="delete_btn" name="delete_btn" >Delete</button> -->
+                                    <a href="index.php?delete=<?php echo $row['note_id']; ?>" class="delete_btn" name="delete_btn">Delete</a>
+                                </div>
+                            </td>
+                        
+                        </tr>	
+                    <?php endwhile;
+                    } ?>
+            </table>
+        <!--  -->
         <?php mysqli_close($connect); // Close connection ?>
     <?php endif; ?>
     </div>

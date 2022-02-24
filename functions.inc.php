@@ -1,5 +1,6 @@
 <?php
 
+
 //register.php-----------------------------------------------------------
 function emptyInputSignup($email, $username, $password, $repeatPassword)
 {

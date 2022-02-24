@@ -37,10 +37,6 @@
         }
         else if($success)
         {
-            // echo $titleLength;
-            // echo "</br>";
-            // echo $contentLength;
-            //echo "add succesfully";
             header('Location: index.php');
         }
     }
@@ -65,8 +61,6 @@
     }
     if(isset($_POST['btnupdate']))
     {
-        //include 'login.inc.php';
-
         $id = $_POST['id'];
         $title = $_POST['title'];
         $content = $_POST['contentField'];
@@ -106,17 +100,20 @@
     {
         $id = $_GET['delete'];
         $delete=$connect->query("DELETE FROM notes WHERE note_id = $id") or die($mysqli->error());
-
-        echo $id;
     
         if($delete)
         {
             $delSuccess = "success";
+            header("Location: index.php");
+            exit();
         }
         else
         {
-            $delSuccess = "not succes";
+            $delSuccess = "not success";
+            header("Location: index.php?error=notSuccess");
+            exit();
+            
         }
-        echo $delSuccess;
-        header('Location: index.php');
+        // echo $delSuccess;
+        // header('Location: index.php');
     }

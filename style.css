@@ -289,7 +289,7 @@ td.action {
     text-align: center;
 }
 
-.table-buttons-contianer {
+.table-buttons-container {
     display: flex;
     gap: 15px;
     justify-content: center;
