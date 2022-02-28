@@ -122,6 +122,27 @@ body {
     box-sizing: border-box;
 }
 
+.welcomeText{
+    background-image: url("Resources/pexels-tirachard-kumtanom-733852.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+.welcomeText a{
+    color: black;
+    font-size: 25px;
+    font-weight: bold;
+    padding: 30px;
+    align-items: center;
+    position: absolute;
+    bottom: 51px;
+}
+.customText{
+    color: #cc9603;
+    /* margin-left: 515px; */
+}
 
 /* Add padding to containers */
 
@@ -219,12 +240,12 @@ form[name="form"] {
 
 /*welcome.php ---------------------------------------------------------------------------------------------------*/
 
-.title {
+.title, .searchfield {
     margin-bottom: 10px;
     margin-top: 10px;
 }
 
-input.title {
+input.title, input.searchfield {
     margin-bottom: 10px;
     margin-top: 10px;
     width: 100%;
@@ -233,13 +254,18 @@ input.title {
     border-radius: 2px;
     outline: none;
 }
+content{
+    word-break: break-word;
+    width: 100%;
+    height: 35ch;
+    border: 1px solid #cc9603;
+    background: #e7e7e7;
+    border-radius: 2px;
+    outline: none;
+}
 
 .contentField {
     word-break: break-word;
-    /* border: 1px black;
-  width: auto;
-  height: auto;
-  box-sizing:border-box; */
     width: 100%;
     height: 35ch;
     border: 1px solid #cc9603;
@@ -259,34 +285,36 @@ input.title {
 table {
     width: 100%;
     margin-bottom: 45px;
-    border: 1px solid black;
+    /* border-top: 3px solid white;
+    border-left: 3px solid white;
+    border-right: 3px solid white; */
     table-layout: fixed;
 }
-
-table td {
+table td, th {
     overflow: hidden;
     word-wrap: break-word;
 }
 
-tbody td {
+td, th {
     padding-top: 8px;
     padding-bottom: 8px;
     padding-right: 8px;
     padding-left: 8px;
     max-width: 100%;
+    border-bottom: 3px solid white;
 }
 
-tbody tr:nth-child(odd) {
+th {
     background-color: #cc9603;
-    color: #fff;
+    color: white;
 }
 
-td.action {
+td.action, th.action {
     width: 30px;
 }
 
 .header-table-title {
-    text-align: center;
+    text-align: left;
 }
 
 .table-buttons-container {
@@ -297,28 +325,38 @@ td.action {
 }
 
 .edit_btn {
-    border: 1px solid #cc9603;
     border-radius: 3px;
-    padding: 3px;
-    color: black;
+    padding: 5px;
+    color: white;
     font-size: 15px;
     font-weight: bold;
     background-color: #cc9603;
 }
 
 .delete_btn {
-    border: 1px solid rgb(165, 21, 21);
     border-radius: 3px;
-    padding: 3px;
-    color: black;
+    padding: 5px;
+    color: white;
     font-size: 15px;
     font-weight: bold;
     background-color: rgb(165, 21, 21);
 }
 
+.searchContainer{
+    margin-top: 50px;
+    margin-bottom: 10px;
+    width: 80%;
+    align-items: left;
+}
+
+.btnsearch{
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 3px;
+}
+
 .btnadd {
-    margin-top: 15px;
-    margin-bottom: 15px;
     margin-top: 15px;
     margin-bottom: 15px;
     background: #438a43;
@@ -335,8 +373,6 @@ td.action {
 }
 
 .btnupdate {
-    margin-top: 15px;
-    margin-bottom: 15px;
     margin-top: 15px;
     margin-bottom: 15px;
     background: #cc9603;
